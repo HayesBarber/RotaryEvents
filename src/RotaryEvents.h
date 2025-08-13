@@ -8,6 +8,6 @@ public:
   void init(void (*onRotateLeft)(), void (*onRotateRight)());
 
 private:
-  void (*onRotateLeft)();
-  void (*onRotateRight)();
+  void (*_onRotateLeft)();
+  void (*_onRotateRight)();
 };
