@@ -8,8 +8,6 @@ public:
   void init(void (*onRotateLeft)(), void (*onRotateRight)());
 
 private:
-  static RotaryEvents *instance;
-
   void (*onRotateLeft)();
   void (*onRotateRight)();
 };
