@@ -4,10 +4,14 @@
 
 class RotaryEvents {
 public:
-  RotaryEvents();
+  static RotaryEvents& getInstance();
   void init(void (*onRotateLeft)(), void (*onRotateRight)());
 
 private:
+  RotaryEvents();
+  RotaryEvents(const RotaryEvents&) = delete;
+  RotaryEvents& operator=(const RotaryEvents&) = delete;
+
   void (*_onRotateLeft)();
   void (*_onRotateRight)();
 };
