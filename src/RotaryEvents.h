@@ -4,13 +4,14 @@
 
 class RotaryEvents {
 public:
-  static RotaryEvents& getInstance();
-  void init(uint8_t encoderClk, uint8_t encoderDt, void (*onRotateLeft)(), void (*onRotateRight)());
+  static RotaryEvents &getInstance();
+  void init(uint8_t encoderClk, uint8_t encoderDt, void (*onRotateLeft)(),
+            void (*onRotateRight)());
 
 private:
   RotaryEvents();
-  RotaryEvents(const RotaryEvents&) = delete;
-  RotaryEvents& operator=(const RotaryEvents&) = delete;
+  RotaryEvents(const RotaryEvents &) = delete;
+  RotaryEvents &operator=(const RotaryEvents &) = delete;
 
   void (*_onRotateLeft)();
   void (*_onRotateRight)();
