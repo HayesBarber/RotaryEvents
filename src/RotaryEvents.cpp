@@ -6,8 +6,6 @@ RotaryEvents::RotaryEvents()
 
 void RotaryEvents::encoderInterrupt() { getInstance().handleEncoder(); }
 
-void RotaryEvents::handleEncoder() {}
-
 RotaryEvents &RotaryEvents::getInstance() {
   static RotaryEvents instance;
   return instance;
@@ -25,4 +23,26 @@ void RotaryEvents::init(uint8_t encoderClk, uint8_t encoderDt,
   _oldState = digitalRead(encoderClk);
 
   attachInterrupt(encoderClk, encoderInterrupt, CHANGE);
+}
+
+void RotaryEvents::handleEncoder() {
+  _state = digitalRead(_encoderClk);
+  if (_state != _oldState) {
+    if (digitalRead(_encoderDt) == _state) {
+      _stepCounter++;
+    } else {
+      _stepCounter--;
+    }
+
+    _oldState = _state;
+
+    if (abs(_stepCounter) >= 2) {
+      if (_stepCounter > 0 && _onRotateRight) {
+        _onRotateRight();
+      } else if (_stepCounter < 0 && _onRotateLeft) {
+        _onRotateLeft();
+      }
+      _stepCounter = 0;
+    }
+  }
 }
