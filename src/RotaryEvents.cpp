@@ -2,7 +2,7 @@
 
 RotaryEvents::RotaryEvents()
   : _onRotateLeft(nullptr), _onRotateRight(nullptr),
-    _encoderClk(0), _encoderDt(0) {}
+    _encoderClk(0), _encoderDt(0), _state(0), _oldState(0), _stepCounter(0) {}
 
 RotaryEvents& RotaryEvents::getInstance() {
   static RotaryEvents instance;

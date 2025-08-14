@@ -17,4 +17,7 @@ private:
 
   uint8_t _encoderClk;
   uint8_t _encoderDt;
+  int _state;
+  int _oldState;
+  int _stepCounter;
 };
