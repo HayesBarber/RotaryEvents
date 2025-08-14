@@ -12,6 +12,8 @@ private:
   RotaryEvents();
   RotaryEvents(const RotaryEvents &) = delete;
   RotaryEvents &operator=(const RotaryEvents &) = delete;
+  static void encoderInterrupt();
+  void handleEncoder();
 
   void (*_onRotateLeft)();
   void (*_onRotateRight)();
