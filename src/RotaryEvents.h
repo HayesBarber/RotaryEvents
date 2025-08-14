@@ -5,7 +5,7 @@
 class RotaryEvents {
 public:
   static RotaryEvents& getInstance();
-  void init(void (*onRotateLeft)(), void (*onRotateRight)());
+  void init(uint8_t encoderClk, uint8_t encoderDt, void (*onRotateLeft)(), void (*onRotateRight)());
 
 private:
   RotaryEvents();
@@ -14,4 +14,7 @@ private:
 
   void (*_onRotateLeft)();
   void (*_onRotateRight)();
+
+  uint8_t _encoderClk;
+  uint8_t _encoderDt;
 };
