@@ -36,6 +36,7 @@ void RotaryEvents::handleEncoder() {
 
   _oldState = _state;
 
+  // Determine direction: if DT matches CLK state, encoder rotated clockwise
   if (digitalRead(_encoderDt) == _state) {
     _stepCounter++;
   } else {
@@ -51,5 +52,6 @@ void RotaryEvents::handleEncoder() {
   } else if (_stepCounter < 0 && _onRotateLeft) {
     _onRotateLeft();
   }
+
   _stepCounter = 0;
 }
