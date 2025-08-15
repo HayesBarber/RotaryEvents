@@ -1,0 +1,12 @@
+{
+  "name": "RotaryEvents",
+  "version": "0.1.0",
+  "description": "Handle rotary encoder events and trigger callbacks.",
+  "frameworks": "arduino",
+  "license": "MIT",
+  "platforms": ["espressif32"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/HayesBarber/RotaryEvents.git"
+  }
+}
