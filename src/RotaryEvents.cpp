@@ -1,0 +1,57 @@
+#include "RotaryEvents.h"
+
+RotaryEvents::RotaryEvents()
+    : _onRotateLeft(nullptr), _onRotateRight(nullptr), _encoderClk(0),
+      _encoderDt(0), _state(0), _oldState(0), _stepCounter(0),
+      _stepThreshold(1) {}
+
+void RotaryEvents::encoderInterrupt() { getInstance().handleEncoder(); }
+
+RotaryEvents &RotaryEvents::getInstance() {
+  static RotaryEvents instance;
+  return instance;
+}
+
+void RotaryEvents::init(uint8_t encoderClk, uint8_t encoderDt,
+                        void (*onRotateLeft)(), void (*onRotateRight)(),
+                        int stepThreshold) {
+  _encoderClk = encoderClk;
+  _encoderDt = encoderDt;
+  _onRotateLeft = onRotateLeft;
+  _onRotateRight = onRotateRight;
+  _stepThreshold = stepThreshold;
+
+  pinMode(encoderClk, INPUT_PULLUP);
+  pinMode(encoderDt, INPUT_PULLUP);
+  _oldState = digitalRead(encoderClk);
+
+  attachInterrupt(encoderClk, encoderInterrupt, CHANGE);
+}
+
+void RotaryEvents::handleEncoder() {
+  _state = digitalRead(_encoderClk);
+  if (_state == _oldState) {
+    return;
+  }
+
+  _oldState = _state;
+
+  // Determine direction: if DT matches CLK state, encoder rotated clockwise
+  if (digitalRead(_encoderDt) == _state) {
+    _stepCounter++;
+  } else {
+    _stepCounter--;
+  }
+
+  if (abs(_stepCounter) < _stepThreshold) {
+    return;
+  }
+
+  if (_stepCounter > 0 && _onRotateRight) {
+    _onRotateRight();
+  } else if (_stepCounter < 0 && _onRotateLeft) {
+    _onRotateLeft();
+  }
+
+  _stepCounter = 0;
+}
