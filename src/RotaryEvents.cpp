@@ -2,7 +2,8 @@
 
 RotaryEvents::RotaryEvents()
     : _onRotateLeft(nullptr), _onRotateRight(nullptr), _encoderClk(0),
-      _encoderDt(0), _state(0), _oldState(0), _stepCounter(0) {}
+      _encoderDt(0), _state(0), _oldState(0), _stepCounter(0),
+      _stepThreshold(1) {}
 
 void RotaryEvents::encoderInterrupt() { getInstance().handleEncoder(); }
 
@@ -12,11 +13,13 @@ RotaryEvents &RotaryEvents::getInstance() {
 }
 
 void RotaryEvents::init(uint8_t encoderClk, uint8_t encoderDt,
-                        void (*onRotateLeft)(), void (*onRotateRight)()) {
+                        void (*onRotateLeft)(), void (*onRotateRight)(),
+                        int stepThreshold) {
   _encoderClk = encoderClk;
   _encoderDt = encoderDt;
   _onRotateLeft = onRotateLeft;
   _onRotateRight = onRotateRight;
+  _stepThreshold = stepThreshold;
 
   pinMode(encoderClk, INPUT_PULLUP);
   pinMode(encoderDt, INPUT_PULLUP);
@@ -36,7 +39,7 @@ void RotaryEvents::handleEncoder() {
 
     _oldState = _state;
 
-    if (abs(_stepCounter) >= 2) {
+    if (abs(_stepCounter) >= _stepThreshold) {
       if (_stepCounter > 0 && _onRotateRight) {
         _onRotateRight();
       } else if (_stepCounter < 0 && _onRotateLeft) {

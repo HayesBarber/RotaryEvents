@@ -6,7 +6,7 @@ class RotaryEvents {
 public:
   static RotaryEvents &getInstance();
   void init(uint8_t encoderClk, uint8_t encoderDt, void (*onRotateLeft)(),
-            void (*onRotateRight)());
+            void (*onRotateRight)(), int stepThreshold);
 
 private:
   RotaryEvents();
@@ -23,4 +23,5 @@ private:
   int _state;
   int _oldState;
   int _stepCounter;
+  int _stepThreshold;
 };
