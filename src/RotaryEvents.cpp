@@ -30,22 +30,26 @@ void RotaryEvents::init(uint8_t encoderClk, uint8_t encoderDt,
 
 void RotaryEvents::handleEncoder() {
   _state = digitalRead(_encoderClk);
-  if (_state != _oldState) {
-    if (digitalRead(_encoderDt) == _state) {
-      _stepCounter++;
-    } else {
-      _stepCounter--;
-    }
-
-    _oldState = _state;
-
-    if (abs(_stepCounter) >= _stepThreshold) {
-      if (_stepCounter > 0 && _onRotateRight) {
-        _onRotateRight();
-      } else if (_stepCounter < 0 && _onRotateLeft) {
-        _onRotateLeft();
-      }
-      _stepCounter = 0;
-    }
+  if (_state == _oldState) {
+    return;
   }
+
+  _oldState = _state;
+
+  if (digitalRead(_encoderDt) == _state) {
+    _stepCounter++;
+  } else {
+    _stepCounter--;
+  }
+
+  if (abs(_stepCounter) < _stepThreshold) {
+    return;
+  }
+
+  if (_stepCounter > 0 && _onRotateRight) {
+    _onRotateRight();
+  } else if (_stepCounter < 0 && _onRotateLeft) {
+    _onRotateLeft();
+  }
+  _stepCounter = 0;
 }
